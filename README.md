@@ -55,5 +55,4 @@ To visualize a policy, change `checkpoint=/path/to/your/policy` in `record_video
 
 
 ### Summary of work
-![](./Sym_Guided_RL_Video_v2.mp4)
-<!-- ![](https://user-images.githubusercontent.com/58986949/115314310-805b2780-a1a7-11eb-8558-648a367ea231.mp4) -->
+<video src="./Sym_Guided_RL_Video_v2.mp4" width="320" height="240" controls></video>
