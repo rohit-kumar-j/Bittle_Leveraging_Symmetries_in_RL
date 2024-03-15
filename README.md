@@ -29,7 +29,6 @@ cd isaacgymenvs/
 conda activate your_conda_env_name
 ```
 
-
 #### Train a policy
 To train policies, run
 ```
@@ -47,6 +46,8 @@ To visualize policies, change `checkpoint=/path/to/your/policy` in `visualize.sh
 ./visualize.sh
 ```
 
+We upload 4 pretrained policies for bounding (`runs/DLARBittle_B2_0.1-0.8/`), galloping (`runs/DLARBittle_GP_0.1-0.8/`), half-bounding (`runs/DLARBittle_HB_H2_0.3-0.6/`) and pronking (`runs/DLARBittle_PK_0.1-0.8/`) gait.
+
 #### Record video for pre-trained policies
 To visualize a policy, change `checkpoint=/path/to/your/policy` in `record_video.sh`. Then run
 ```
@@ -55,4 +56,3 @@ To visualize a policy, change `checkpoint=/path/to/your/policy` in `record_video
 
 
 ### Summary of work
-<video src="./Sym_Guided_RL_Video_v2.mp4" width="320" height="240" controls></video>
