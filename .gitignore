@@ -1,0 +1,5 @@
+isaacgymenvs/runs/
+isaacgymenvs/nohup.out
+*videos/
+*pyc
+*__pycache__

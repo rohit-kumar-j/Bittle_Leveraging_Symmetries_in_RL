@@ -1,0 +1,1 @@
+python train.py task=DLARBittle_PRD_v2 train=DLARBittlePPO_LSTM checkpoint=runs/DLARBittle/nn/DLARBittle.pth test=True num_envs=1 capture_video=True capture_video_len=1500

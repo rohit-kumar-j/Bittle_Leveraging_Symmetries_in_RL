@@ -1,0 +1,1 @@
+python train.py task=DLARBittle_PRD_v2 train=DLARBittlePPO_LSTM headless=True max_iterations=20000

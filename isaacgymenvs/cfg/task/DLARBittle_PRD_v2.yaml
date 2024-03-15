@@ -1,0 +1,291 @@
+# used to create the object
+name: DLARBittle_PRD_v2
+
+physics_engine: ${..physics_engine}
+
+env:
+  numEnvs: ${resolve_default:1024,${...num_envs}}
+  envSpacing: 4.  # [m]
+
+  clipObservations: 5.0
+  clipActions: 1.0
+
+  plane:
+    staticFriction: 1.0  # [-]
+    dynamicFriction: 1.0  # [-]
+    restitution: 0.        # [-]
+
+  baseInitState:
+    pos: [0.0, 0.0, 0.098] # x,y,z [m]
+    rot: [0.0, 0.0, 0.0, 1.0] # x,y,z,w [quat]
+    vLinear: [0.0, 0.0, 0.0]  # x,y,z [m/s]
+    vAngular: [0.0, 0.0, 0.0]  # x,y,z [rad/s]
+
+  randomCommandVelocityRanges:
+    linear_x: [0., 0.] # min max [m/s]
+    linear_y: [-2., 2.]   # min max [m/s]
+    yaw: [-1.57, 1.57]          # min max [rad/s]
+
+  control:
+    # 2024.1.17
+    # Scale the coefficient to 1/10 m
+    # PD Drive parameters:
+    # stiffness: 85.0  # [N*m/rad]
+    # damping: 4.0     # [N*m*s/rad]
+    stiffness: 0.85  # [N*m/rad] # file:///home/dlar3/Documents/bittle-RL/files/IsaacGym_Preview_4_Package/isaacgym/docs/programming/physics.html
+    damping: 0.04     # [N*m*s/rad]
+    actionScale: 3.14
+    controlFrequencyInv: 1 # 60 Hz
+
+  defaultJointAngles:  # = target angles when action = 0.0
+
+    # 2024.2.12: new default joint position that match the initial leg length:0.08m
+    left-back-shoulder-joint: 0.52360     # [rad]
+    right-back-shoulder-joint: -0.52360    # [rad]
+    left-front-shoulder-joint: 0.52360   # [rad]
+    right-front-shoulder-joint: -0.52360   # [rad]
+
+    left-back-knee-joint: -1.04720       # [rad]
+    right-back-knee-joint: 1.04720           # [rad]
+    left-front-knee-joint: -1.04720        # [rad]
+    right-front-knee-joint: 1.04720         # [rad]
+
+
+    # left-back-shoulder-joint: 0.7854      # [rad]
+    # right-back-shoulder-joint: -0.7854    # [rad]
+    # left-front-shoulder-joint: 0.7854   # [rad]
+    # right-front-shoulder-joint: -0.7854   # [rad]
+
+    # left-back-knee-joint: -1.5708       # [rad]
+    # right-back-knee-joint: 1.5708         # [rad]
+    # left-front-knee-joint: -1.5708       # [rad]
+    # right-front-knee-joint: 1.5708        # [rad]
+
+    # left-back-shoulder-joint: 0.5      # [rad]
+    # right-back-shoulder-joint: -0.5    # [rad]
+    # left-front-shoulder-joint: -0.2    # [rad]
+    # right-front-shoulder-joint: 0.2   # [rad]
+
+    # left-back-knee-joint: -0.8        # [rad]
+    # right-back-knee-joint: 0.8         # [rad]
+    # left-front-knee-joint: -0.5        # [rad]
+    # right-front-knee-joint: 0.5        # [rad]
+
+
+  urdfAsset:
+    file: "urdf/bittle/urdf/bittle_PRD_v2.urdf"
+    collapseFixedJoints: True
+    fixBaseLink: False
+    defaultDofDriveMode: 1 # see GymDofDriveModeFlags (0 is none, 1 is pos tgt, 2 is vel tgt, 4 effort)
+
+  learn:
+    # # 2024.01.24: Deprecated
+    # # rewards
+    # linearVelocityXYRewardScale: 1.0
+    # angularVelocityZRewardScale: 0.5
+    # torqueRewardScale: -0.00002
+    # headingScale: 0.25
+    # # normalization
+    # linearVelocityScale: 2.0
+    # angularVelocityScale: 0.25
+    # dofPositionScale: 1.0
+    # dofVelocityScale: 0.05
+
+    # normalization
+    linearVelocityScale: 1.0
+    angularVelocityScale: 1.0
+    dofPositionScale: 1.0
+    dofVelocityScale: 1.0
+
+
+    # # episode length in seconds
+    # episodeLength_s: 20
+
+    # 2024.01.24: Reward terms
+    # alive bonus
+    upScale: 1
+    lin_vel_x_err_coef: 10
+    lin_vel_y_error_coef: 9
+    ang_vel_yaw_error_coef: 2
+    # Coefficient for command reward
+    E_R_cmd_coef: 0.3
+    # Torque difference
+    torque_diff_coef: 0.4
+    # Coefficient for smoothness reward
+    E_R_smooth_coef: 0.2
+
+    # periodic reward
+    prd_contact_force_coef: 0.2 # 2
+    E_C_frc_val_offset: 0 # 0.35
+    prd_velocity_coef: 5
+    E_C_spd_val_offset: 0 # 0.2 
+    E_R_prd_coef: 0.5
+
+    # Morphological symmetry reward
+    morphological_kinematic_diff_coef: 0.3
+    morphological_sigma: 0.05
+    E_R_morphological_kinematic_coef: 0.2
+
+    # # Bounding constraint 
+    # bounding_kinematic_diff_coef: 0.3
+    # bounding_dynamic_diff_coef: 1
+    # E_R_bounding_kinematic_coef: 0.1
+    # E_R_bounding_dynamic_coef: 0.00
+ 
+    # 2024.02.21: Pitching term
+    pitching_rew_coef: 0.003
+    E_R_pitching_coef: 0.00
+
+
+  # viewer cam:
+  viewer:
+    refEnv: 0
+    pos: [0, 0, 4]  # [m]
+    lookat: [1., 1, 3.3]  # [m]
+
+
+  # 2023.12.03: Periodical reward composition
+  periodicalRewardComposition:
+    # # 2023.11.07: the time interval of one periodical motion. Unit: second
+    # period: 0.8 
+    # Based on the prediction of SLIP model, the period should be 0.4s for the velocity of 2.5 m/s
+    theta_left_front : 0.45 # Offset: [0, 1]
+    theta_left_rear : 0.05 # Offset: [0, 1]
+    theta_right_front : 0.55 # Offset: [0, 1]
+    theta_right_rear : -0.05 # Offset: [0, 1]
+
+
+    theta_front_random_range: [ -0.0, -0.0]
+    theta_rear_random_range:  [ 0.0 ,   0.0]
+
+
+    c_swing_frc : -1
+    c_swing_spd : 0
+    c_stance_frc : 0
+    c_stance_spd : -1
+    # swing_start : 0.0
+    # swing_end : 0.46
+    # stance_start : 0.46
+    # stance_end : 1.0
+    stance_ratio: 
+    kappa : 16
+    # The number of periods
+    episodeLength_nop: 50
+
+    # period time
+    period: 0.18
+    period_scale_range: [0.90, 1.00] # [0.90, 1.11]
+    # duty factor
+    duty_factor: 0.43
+    duty_factor_scale_range: [0.90, 1.00] # [0.96, 1.03]
+
+
+    # linear x-axis velocity
+    target_lin_vel_x: 0
+    target_lin_vel_x_scale_range: [1.0, 1.0]
+    # linear y-axis velocity: encourage moving forward
+    target_lin_vel_y: 1.0
+    target_lin_vel_y_scale_range_sign: [1.0, 1.0] # 2024.02.12: a set of specific values, not range # [1.0, 1.0]
+    target_lin_vel_y_scale_range_scale: [0.3, 0.3] # 2024.02.14: the range for velocity scaling
+    # Penalize yaw velocity
+    target_ang_vel_yaw: 0
+    target_ang_vel_yaw_scale_range: [1.0, 1.0]
+
+
+  # set to True if you use camera sensors in the environment
+  enableCameraSensors: False
+
+sim:
+  dt: 0.005
+  substeps: 2
+  up_axis: "z"
+  use_gpu_pipeline: ${eq:${...pipeline},"gpu"}
+  gravity: [0.0, 0.0, -9.81]
+  physx:
+    num_threads: ${....num_threads}
+    solver_type: ${....solver_type}
+    use_gpu: ${contains:"cuda",${....sim_device}} # set to False to run on CPU
+    num_position_iterations: 4
+    num_velocity_iterations: 1
+    rest_offset: 0.0
+    # 2024.1.25
+    # Test contact_offset/bounce_threshold unit? assume to be meter
+    # contact_offset: 0.02
+    # bounce_threshold_velocity: 0.2
+    contact_offset: 0.002 # The distance at which shape generates contacts. See https://forums.developer.nvidia.com/t/explanation-of-contact-parameters-and-relation-to-gpu-memory-usage/239969
+    bounce_threshold_velocity: 0.02 # page 40 and 70, https://repository.gatech.edu/server/api/core/bitstreams/b0ec9ded-a541-4e69-8a40-5631e954ee6b/content (contact offset: page 70)
+    max_depenetration_velocity: 100.0
+    default_buffer_size_multiplier: 5.0
+    max_gpu_contact_pairs: 8388608 # 8*1024*1024
+    num_subscenes: ${....num_subscenes}
+    contact_collection: 1 # 0: CC_NEVER (don't collect contact info), 1: CC_LAST_SUBSTEP (collect only contacts on last substep), 2: CC_ALL_SUBSTEPS (default - all contacts)
+
+task:
+  randomize: False
+  randomization_params:
+    frequency: 600   # Define how many environment steps between generating new randomizations
+    observations:
+      range: [0, .002] # range for the white noise
+      operation: "additive"
+      distribution: "gaussian"
+    actions:
+      range: [0., .02]
+      operation: "additive"
+      distribution: "gaussian"
+    sim_params:
+      gravity:
+        range: [0, 0.4]
+        operation: "additive"
+        distribution: "gaussian"
+        schedule: "linear"  # "linear" will linearly interpolate between no rand and max rand
+        schedule_steps: 3000
+    actor_params:
+      anymal:
+        color: True
+        rigid_body_properties:
+          mass:
+            range: [0.5, 1.5]
+            operation: "scaling"
+            distribution: "uniform"
+            setup_only: True # Property will only be randomized once before simulation is started. See Domain Randomization Documentation for more info.
+            schedule: "linear"  # "linear" will linearly interpolate between no rand and max rand
+            schedule_steps: 3000
+        rigid_shape_properties:
+          friction:
+            num_buckets: 500
+            range: [0.7, 1.3]
+            operation: "scaling"
+            distribution: "uniform"
+            schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+          restitution:
+            range: [0., 0.7]
+            operation: "scaling"
+            distribution: "uniform"
+            schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+        dof_properties:
+          damping:
+            range: [0.5, 1.5]
+            operation: "scaling"
+            distribution: "uniform"
+            schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+          stiffness:
+            range: [0.5, 1.5]
+            operation: "scaling"
+            distribution: "uniform"
+            schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+          lower:
+            range: [0, 0.01]
+            operation: "additive"
+            distribution: "gaussian"
+            schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+          upper:
+            range: [0, 0.01]
+            operation: "additive"
+            distribution: "gaussian"
+            schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
