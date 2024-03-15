@@ -73,5 +73,11 @@ To visualize a policy, change `checkpoint=/path/to/your/policy` in `record_video
 ```
 
 
+<<<<<<< HEAD
 ---
 ### Summary of work
+=======
+### Summary of work
+https://github.com/DLARlab/Bittle_Leveraging_Symmetries_in_RL/assets/69872954/ab3cce09-828b-4f61-b5ac-0a1872d75d80
+
+>>>>>>> ace04f2ae93e65340a0d10df2a615ed40966767c
