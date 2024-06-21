@@ -3,3 +3,7 @@ isaacgymenvs/nohup.out
 *videos/
 *pyc
 *__pycache__
+
+external
+thirdparty
+*.so
